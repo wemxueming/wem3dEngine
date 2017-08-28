@@ -25,12 +25,17 @@ public class Scene
 	private int maxFps = 100;
 
 	private Renderer renderer;
+	private Control control;
+	private Camera camera;
+	private Map<Integer, Object3D> obj3ds = new HashMap<Integer, Object3D>();
 	private Map<Integer, Model> models = new HashMap<Integer, Model>();
 
 	public Scene()
 	{
 		init();
 		renderer = new Renderer();
+		control = new Control();
+		camera = new Camera();
 	}
 
 	protected void init()
@@ -59,11 +64,8 @@ public class Scene
 		running = Display.isCreated();
 		while (running && !Display.isCloseRequested())
 		{
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-
-			renderer.render(models);
-
+			control.update(delta);
+			renderer.render(this);
 			if (syncFps)
 			{
 				Display.sync(maxFps);
@@ -73,6 +75,26 @@ public class Scene
 		}
 		OGL.destroy();
 		Display.destroy();
+	}
+
+	public void add(Model model)
+	{
+		models.put(model.getVao(), model);
+	}
+
+	public void add(Object3D object3D)
+	{
+		obj3ds.put(object3D.getId(), object3D);
+		Model model = object3D.getModel();
+		if (models.get(model.getVao()) == null)
+		{
+			add(model);
+		}
+	}
+
+	public void add(String name, Controller controller)
+	{
+		control.getControllers().put(name, controller);
 	}
 
 	protected void updateTime()
@@ -192,5 +214,15 @@ public class Scene
 	public void setMaxFps(int maxFps)
 	{
 		this.maxFps = maxFps;
+	}
+
+	public Camera getCamera()
+	{
+		return camera;
+	}
+
+	public Map<Integer, Model> getModels()
+	{
+		return models;
 	}
 }

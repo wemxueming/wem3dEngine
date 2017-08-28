@@ -141,17 +141,6 @@ public final class Buf
 		return buffer;
 	}
 
-	public static FloatBuffer createF(List<Float> target)
-	{
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(target.size());
-		for (float f : target)
-		{
-			buffer.put(f);
-		}
-		buffer.flip();
-		return buffer;
-	}
-
 	public static IntBuffer createI(int[] target)
 	{
 		IntBuffer buffer = BufferUtils.createIntBuffer(target.length);
@@ -166,6 +155,18 @@ public final class Buf
 		for (int i : target)
 		{
 			buffer.put(i);
+		}
+		buffer.flip();
+		return buffer;
+	}
+
+	public static FloatBuffer createF(List<Vertex> target)
+	{
+		int len = target.get(0).length();
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(target.size() * len);
+		for (Vertex v : target)
+		{
+			buffer.put(v.getElements());
 		}
 		buffer.flip();
 		return buffer;

@@ -12,7 +12,19 @@ public class Vertex
 
 	public Vertex(Vec3 position)
 	{
-		this.position = position;
+		if (position == null)
+		{
+			this.position = new Vec3(0,0,0);
+		}
+		else
+		{
+			this.position = position;
+		}
+	}
+
+	public Vertex(float x, float y, float z)
+	{
+		this.position = new Vec3(x, y, z);
 	}
 
 	public int length()
