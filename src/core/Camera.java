@@ -1,12 +1,19 @@
 package core;
 
 
+import core.util.Buf;
 import core.util.Cal;
 import core.util.math3d.Mat4;
 import core.util.math3d.Vec3;
+import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
 
 public class Camera
 {
+	public static final int PROJECTION_VIEW_SIZE = 32 * 4;
+
+	private FloatBuffer CAMERA_BUFFER = BufferUtils.createFloatBuffer(PROJECTION_VIEW_SIZE / 4);
 	private static Mat4 PROJECTION_MAT4 = new Mat4();
 	private static Mat4 VIEW_MAT4 = new Mat4();
 	private int width = 800;
@@ -20,6 +27,11 @@ public class Camera
 	public Camera()
 	{
 
+	}
+
+	public FloatBuffer getProjectionViewBuffer()
+	{
+		return Buf.update(CAMERA_BUFFER, getProjectionMatrix(), getViewMatrix());
 	}
 
 	public Mat4 getProjectionMatrix()

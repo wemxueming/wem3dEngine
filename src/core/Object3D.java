@@ -1,12 +1,18 @@
 package core;
 
+import core.util.Buf;
 import core.util.Cal;
 import core.util.math3d.Mat4;
 import core.util.math3d.Vec3;
+import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
 
 
 public class Object3D
 {
+	public static final int TRANSFORM_SIZE = 64;
+	private FloatBuffer TRANSFORM_BUFFER = BufferUtils.createFloatBuffer(TRANSFORM_SIZE / 4);
 	private static Mat4 TRANSFORM_MAT4 = new Mat4();
 	private static int ID = -1;
 
@@ -98,6 +104,11 @@ public class Object3D
 		Mat4.rotate(Cal.toRadians(rotate.z), Cal.Z_AXIS, TRANSFORM_MAT4, TRANSFORM_MAT4);
 		Mat4.scale(scale, TRANSFORM_MAT4, TRANSFORM_MAT4);
 		return TRANSFORM_MAT4;
+	}
+
+	public FloatBuffer getTransformBuffer()
+	{
+		return Buf.update(TRANSFORM_BUFFER, TRANSFORM_MAT4);
 	}
 
 	public int getId()

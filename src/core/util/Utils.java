@@ -13,6 +13,14 @@ public class Utils
 		return System.nanoTime() / 1000000;
 	}
 
+	public static int getBool(boolean b)
+	{
+		if (b)
+			return 1;
+		else
+			return 0;
+	}
+
 	public static List<Integer> asList(int[] arrays)
 	{
 		List<Integer> list = new ArrayList<Integer>();

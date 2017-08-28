@@ -286,6 +286,20 @@ public final class OGL
 		return id;
 	}
 
+	public static void enableTexture(int target, int texture, int location)
+	{
+		if (texture > -1)
+		{
+			GL13.glActiveTexture(GL13.GL_TEXTURE0 + location);
+			GL11.glBindTexture(target, texture);
+		}
+	}
+
+	public static void disableTexture(int target)
+	{
+		GL11.glBindTexture(target, 0);
+	}
+
 	public static void deleteTexture(int texture)
 	{
 		TEXTURES.remove(texture);

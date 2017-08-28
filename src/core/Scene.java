@@ -29,11 +29,12 @@ public class Scene
 	private Camera camera;
 	private Map<Integer, Object3D> obj3ds = new HashMap<Integer, Object3D>();
 	private Map<Integer, Model> models = new HashMap<Integer, Model>();
+	private Map<Integer, Light> lights = new HashMap<Integer, Light>();
 
 	public Scene()
 	{
 		init();
-		renderer = new Renderer();
+		renderer = new Renderer(10);
 		control = new Control();
 		camera = new Camera();
 	}
@@ -95,6 +96,11 @@ public class Scene
 	public void add(String name, Controller controller)
 	{
 		control.getControllers().put(name, controller);
+	}
+
+	public void add(Light light)
+	{
+		lights.put(light.getId(), light);
 	}
 
 	protected void updateTime()
@@ -224,5 +230,45 @@ public class Scene
 	public Map<Integer, Model> getModels()
 	{
 		return models;
+	}
+
+	public Renderer getRenderer()
+	{
+		return renderer;
+	}
+
+	public void setRenderer(Renderer renderer)
+	{
+		this.renderer = renderer;
+	}
+
+	public Control getControl()
+	{
+		return control;
+	}
+
+	public void setControl(Control control)
+	{
+		this.control = control;
+	}
+
+	public void setCamera(Camera camera)
+	{
+		this.camera = camera;
+	}
+
+	public void setModels(Map<Integer, Model> models)
+	{
+		this.models = models;
+	}
+
+	public Map<Integer, Light> getLights()
+	{
+		return lights;
+	}
+
+	public void setLights(Map<Integer, Light> lights)
+	{
+		this.lights = lights;
 	}
 }

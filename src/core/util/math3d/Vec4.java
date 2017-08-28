@@ -119,6 +119,14 @@ public class Vec4 extends Vec implements Serializable, ReadableVec4, WritableVec
 		this.w = w;
 	}
 
+	public void set(Vec3 vec3, float w)
+	{
+		this.x = vec3.x;
+		this.y = vec3.y;
+		this.z = vec3.z;
+		this.w = w;
+	}
+
 	public Vec4 set(ReadableVec4 src)
 	{
 		this.x = src.getX();
