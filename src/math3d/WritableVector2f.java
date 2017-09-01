@@ -5,7 +5,8 @@
 
 package math3d;
 
-public interface WritableVector2f {
+public interface WritableVector2f
+{
     void setX(float var1);
 
     void setY(float var1);

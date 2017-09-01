@@ -8,7 +8,8 @@ package math3d;
 import java.io.Serializable;
 import java.nio.FloatBuffer;
 
-public class Matrix4f extends Matrix implements Serializable {
+public class Matrix4f extends Matrix implements Serializable
+{
     private static final long serialVersionUID = 1L;
     public float m00;
     public float m01;
@@ -27,15 +28,18 @@ public class Matrix4f extends Matrix implements Serializable {
     public float m32;
     public float m33;
 
-    public Matrix4f() {
+    public Matrix4f()
+    {
         this.setIdentity();
     }
 
-    public Matrix4f(Matrix4f src) {
+    public Matrix4f(Matrix4f src)
+    {
         this.load(src);
     }
 
-    public String toString() {
+    public String toString()
+    {
         StringBuilder buf = new StringBuilder();
         buf.append(this.m00).append(' ').append(this.m10).append(' ').append(this.m20).append(' ').append(this.m30).append('\n');
         buf.append(this.m01).append(' ').append(this.m11).append(' ').append(this.m21).append(' ').append(this.m31).append('\n');
@@ -44,11 +48,13 @@ public class Matrix4f extends Matrix implements Serializable {
         return buf.toString();
     }
 
-    public Matrix setIdentity() {
+    public Matrix setIdentity()
+    {
         return setIdentity(this);
     }
 
-    public static Matrix4f setIdentity(Matrix4f m) {
+    public static Matrix4f setIdentity(Matrix4f m)
+    {
         m.m00 = 1.0F;
         m.m01 = 0.0F;
         m.m02 = 0.0F;
@@ -68,11 +74,13 @@ public class Matrix4f extends Matrix implements Serializable {
         return m;
     }
 
-    public Matrix setZero() {
+    public Matrix setZero()
+    {
         return setZero(this);
     }
 
-    public static Matrix4f setZero(Matrix4f m) {
+    public static Matrix4f setZero(Matrix4f m)
+    {
         m.m00 = 0.0F;
         m.m01 = 0.0F;
         m.m02 = 0.0F;
@@ -92,12 +100,15 @@ public class Matrix4f extends Matrix implements Serializable {
         return m;
     }
 
-    public Matrix4f load(Matrix4f src) {
+    public Matrix4f load(Matrix4f src)
+    {
         return load(src, this);
     }
 
-    public static Matrix4f load(Matrix4f src, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f load(Matrix4f src, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 
@@ -120,7 +131,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix load(FloatBuffer buf) {
+    public Matrix load(FloatBuffer buf)
+    {
         this.m00 = buf.get();
         this.m01 = buf.get();
         this.m02 = buf.get();
@@ -140,7 +152,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return this;
     }
 
-    public Matrix loadTranspose(FloatBuffer buf) {
+    public Matrix loadTranspose(FloatBuffer buf)
+    {
         this.m00 = buf.get();
         this.m10 = buf.get();
         this.m20 = buf.get();
@@ -160,7 +173,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return this;
     }
 
-    public Matrix store(FloatBuffer buf) {
+    public Matrix store(FloatBuffer buf)
+    {
         buf.put(this.m00);
         buf.put(this.m01);
         buf.put(this.m02);
@@ -180,7 +194,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return this;
     }
 
-    public Matrix storeTranspose(FloatBuffer buf) {
+    public Matrix storeTranspose(FloatBuffer buf)
+    {
         buf.put(this.m00);
         buf.put(this.m10);
         buf.put(this.m20);
@@ -200,7 +215,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return this;
     }
 
-    public Matrix store3f(FloatBuffer buf) {
+    public Matrix store3f(FloatBuffer buf)
+    {
         buf.put(this.m00);
         buf.put(this.m01);
         buf.put(this.m02);
@@ -213,7 +229,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return this;
     }
 
-    public Matrix4f add(Matrix4f target) {
+    public Matrix4f add(Matrix4f target)
+    {
         this.m00 = this.m00 + target.m00;
         this.m01 = this.m01 + target.m01;
         this.m02 = this.m02 + target.m02;
@@ -233,8 +250,10 @@ public class Matrix4f extends Matrix implements Serializable {
         return this;
     }
 
-    public static Matrix4f add(Matrix4f left, Matrix4f right, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f add(Matrix4f left, Matrix4f right, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 
@@ -257,7 +276,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix4f sub(Matrix4f target) {
+    public Matrix4f sub(Matrix4f target)
+    {
         this.m00 = this.m00 - target.m00;
         this.m01 = this.m01 - target.m01;
         this.m02 = this.m02 - target.m02;
@@ -277,8 +297,10 @@ public class Matrix4f extends Matrix implements Serializable {
         return this;
     }
 
-    public static Matrix4f sub(Matrix4f left, Matrix4f right, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f sub(Matrix4f left, Matrix4f right, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 
@@ -301,7 +323,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix4f mul(Matrix4f target) {
+    public Matrix4f mul(Matrix4f target)
+    {
         float m00 = this.m00 * target.m00 + this.m10 * target.m01 + this.m20 * target.m02 + this.m30 * target.m03;
         float m01 = this.m01 * target.m00 + this.m11 * target.m01 + this.m21 * target.m02 + this.m31 * target.m03;
         float m02 = this.m02 * target.m00 + this.m12 * target.m01 + this.m22 * target.m02 + this.m32 * target.m03;
@@ -337,8 +360,10 @@ public class Matrix4f extends Matrix implements Serializable {
         return this;
     }
 
-    public static Matrix4f mul(Matrix4f left, Matrix4f right, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f mul(Matrix4f left, Matrix4f right, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 
@@ -377,7 +402,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix4f div(Matrix4f target) {
+    public Matrix4f div(Matrix4f target)
+    {
         float m00 = this.m00 / target.m00 + this.m10 / target.m01 + this.m20 / target.m02 + this.m30 / target.m03;
         float m01 = this.m01 / target.m00 + this.m11 / target.m01 + this.m21 / target.m02 + this.m31 / target.m03;
         float m02 = this.m02 / target.m00 + this.m12 / target.m01 + this.m22 / target.m02 + this.m32 / target.m03;
@@ -413,8 +439,10 @@ public class Matrix4f extends Matrix implements Serializable {
         return this;
     }
 
-    public static Matrix4f div(Matrix4f left, Matrix4f right, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f div(Matrix4f left, Matrix4f right, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 
@@ -453,7 +481,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix4f transform(Vector4f target) {
+    public Matrix4f transform(Vector4f target)
+    {
         this.m00 = this.m00 * target.x;
         this.m01 = this.m01 * target.x;
         this.m02 = this.m02 * target.x;
@@ -473,8 +502,10 @@ public class Matrix4f extends Matrix implements Serializable {
         return this;
     }
 
-    public static Matrix4f transform(Matrix4f left, Vector4f right, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f transform(Matrix4f left, Vector4f right, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
         dest.m00 = left.m00 * right.x;
@@ -496,24 +527,30 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix transpose() {
+    public Matrix transpose()
+    {
         return this.transpose(this);
     }
 
-    public Matrix4f translate(Vector2f vec) {
+    public Matrix4f translate(Vector2f vec)
+    {
         return this.translate(vec, this);
     }
 
-    public Matrix4f translate(Vector3f vec) {
+    public Matrix4f translate(Vector3f vec)
+    {
         return this.translate(vec, this);
     }
 
-    public Matrix4f scale(Vector3f vec) {
+    public Matrix4f scale(Vector3f vec)
+    {
         return scale(vec, this, this);
     }
 
-    public static Matrix4f scale(Vector3f vec, Matrix4f src, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f scale(Vector3f vec, Matrix4f src, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 
@@ -532,16 +569,20 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix4f rotate(float angle, Vector3f axis) {
+    public Matrix4f rotate(float angle, Vector3f axis)
+    {
         return this.rotate(angle, axis, this);
     }
 
-    public Matrix4f rotate(float angle, Vector3f axis, Matrix4f dest) {
+    public Matrix4f rotate(float angle, Vector3f axis, Matrix4f dest)
+    {
         return rotate(angle, axis, this, dest);
     }
 
-    public static Matrix4f rotate(float angle, Vector3f axis, Matrix4f src, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f rotate(float angle, Vector3f axis, Matrix4f src, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 
@@ -586,12 +627,15 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix4f translate(Vector3f vec, Matrix4f dest) {
+    public Matrix4f translate(Vector3f vec, Matrix4f dest)
+    {
         return translate(vec, this, dest);
     }
 
-    public static Matrix4f translate(Vector3f vec, Matrix4f src, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f translate(Vector3f vec, Matrix4f src, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 
@@ -602,12 +646,15 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix4f translate(Vector2f vec, Matrix4f dest) {
+    public Matrix4f translate(Vector2f vec, Matrix4f dest)
+    {
         return translate(vec, this, dest);
     }
 
-    public static Matrix4f translate(Vector2f vec, Matrix4f src, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f translate(Vector2f vec, Matrix4f src, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 
@@ -618,12 +665,15 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix4f transpose(Matrix4f dest) {
+    public Matrix4f transpose(Matrix4f dest)
+    {
         return transpose(this, dest);
     }
 
-    public static Matrix4f transpose(Matrix4f src, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f transpose(Matrix4f src, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 
@@ -662,7 +712,8 @@ public class Matrix4f extends Matrix implements Serializable {
         return dest;
     }
 
-    public float determinant() {
+    public float determinant()
+    {
         float f = this.m00 * (this.m11 * this.m22 * this.m33 + this.m12 * this.m23 * this.m31 + this.m13 * this.m21 * this.m32 - this.m13 * this.m22 * this.m31 - this.m11 * this.m23 * this.m32 - this.m12 * this.m21 * this.m33);
         f -= this.m01 * (this.m10 * this.m22 * this.m33 + this.m12 * this.m23 * this.m30 + this.m13 * this.m20 * this.m32 - this.m13 * this.m22 * this.m30 - this.m10 * this.m23 * this.m32 - this.m12 * this.m20 * this.m33);
         f += this.m02 * (this.m10 * this.m21 * this.m33 + this.m11 * this.m23 * this.m30 + this.m13 * this.m20 * this.m31 - this.m13 * this.m21 * this.m30 - this.m10 * this.m23 * this.m31 - this.m11 * this.m20 * this.m33);
@@ -670,18 +721,23 @@ public class Matrix4f extends Matrix implements Serializable {
         return f;
     }
 
-    private static float determinant3x3(float t00, float t01, float t02, float t10, float t11, float t12, float t20, float t21, float t22) {
+    private static float determinant3x3(float t00, float t01, float t02, float t10, float t11, float t12, float t20, float t21, float t22)
+    {
         return t00 * (t11 * t22 - t12 * t21) + t01 * (t12 * t20 - t10 * t22) + t02 * (t10 * t21 - t11 * t20);
     }
 
-    public Matrix invert() {
+    public Matrix invert()
+    {
         return invert(this, this);
     }
 
-    public static Matrix4f invert(Matrix4f src, Matrix4f dest) {
+    public static Matrix4f invert(Matrix4f src, Matrix4f dest)
+    {
         float determinant = src.determinant();
-        if (determinant != 0.0F) {
-            if (dest == null) {
+        if (determinant != 0.0F)
+        {
+            if (dest == null)
+            {
                 dest = new Matrix4f();
             }
 
@@ -719,21 +775,26 @@ public class Matrix4f extends Matrix implements Serializable {
             dest.m32 = t23 * determinant_inv;
             dest.m23 = t32 * determinant_inv;
             return dest;
-        } else {
+        } else
+        {
             return null;
         }
     }
 
-    public Matrix negate() {
+    public Matrix negate()
+    {
         return this.negate(this);
     }
 
-    public Matrix4f negate(Matrix4f dest) {
+    public Matrix4f negate(Matrix4f dest)
+    {
         return negate(this, dest);
     }
 
-    public static Matrix4f negate(Matrix4f src, Matrix4f dest) {
-        if (dest == null) {
+    public static Matrix4f negate(Matrix4f src, Matrix4f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix4f();
         }
 

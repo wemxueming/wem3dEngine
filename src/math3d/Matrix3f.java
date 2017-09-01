@@ -8,7 +8,8 @@ package math3d;
 import java.io.Serializable;
 import java.nio.FloatBuffer;
 
-public class Matrix3f extends Matrix implements Serializable {
+public class Matrix3f extends Matrix implements Serializable
+{
     private static final long serialVersionUID = 1L;
     public float m00;
     public float m01;
@@ -20,16 +21,20 @@ public class Matrix3f extends Matrix implements Serializable {
     public float m21;
     public float m22;
 
-    public Matrix3f() {
+    public Matrix3f()
+    {
         this.setIdentity();
     }
 
-    public Matrix3f load(Matrix3f src) {
+    public Matrix3f load(Matrix3f src)
+    {
         return load(src, this);
     }
 
-    public static Matrix3f load(Matrix3f src, Matrix3f dest) {
-        if (dest == null) {
+    public static Matrix3f load(Matrix3f src, Matrix3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix3f();
         }
 
@@ -45,7 +50,8 @@ public class Matrix3f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix load(FloatBuffer buf) {
+    public Matrix load(FloatBuffer buf)
+    {
         this.m00 = buf.get();
         this.m01 = buf.get();
         this.m02 = buf.get();
@@ -58,7 +64,8 @@ public class Matrix3f extends Matrix implements Serializable {
         return this;
     }
 
-    public Matrix loadTranspose(FloatBuffer buf) {
+    public Matrix loadTranspose(FloatBuffer buf)
+    {
         this.m00 = buf.get();
         this.m10 = buf.get();
         this.m20 = buf.get();
@@ -71,7 +78,8 @@ public class Matrix3f extends Matrix implements Serializable {
         return this;
     }
 
-    public Matrix store(FloatBuffer buf) {
+    public Matrix store(FloatBuffer buf)
+    {
         buf.put(this.m00);
         buf.put(this.m01);
         buf.put(this.m02);
@@ -84,7 +92,8 @@ public class Matrix3f extends Matrix implements Serializable {
         return this;
     }
 
-    public Matrix storeTranspose(FloatBuffer buf) {
+    public Matrix storeTranspose(FloatBuffer buf)
+    {
         buf.put(this.m00);
         buf.put(this.m10);
         buf.put(this.m20);
@@ -97,7 +106,8 @@ public class Matrix3f extends Matrix implements Serializable {
         return this;
     }
 
-    public Matrix3f add(Matrix3f target) {
+    public Matrix3f add(Matrix3f target)
+    {
         this.m00 = this.m00 + target.m00;
         this.m01 = this.m01 + target.m01;
         this.m02 = this.m02 + target.m02;
@@ -110,8 +120,10 @@ public class Matrix3f extends Matrix implements Serializable {
         return this;
     }
 
-    public static Matrix3f add(Matrix3f left, Matrix3f right, Matrix3f dest) {
-        if (dest == null) {
+    public static Matrix3f add(Matrix3f left, Matrix3f right, Matrix3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix3f();
         }
 
@@ -127,7 +139,8 @@ public class Matrix3f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix3f sub(Matrix3f target) {
+    public Matrix3f sub(Matrix3f target)
+    {
         this.m00 = this.m00 - target.m00;
         this.m01 = this.m01 - target.m01;
         this.m02 = this.m02 - target.m02;
@@ -140,8 +153,10 @@ public class Matrix3f extends Matrix implements Serializable {
         return this;
     }
 
-    public static Matrix3f sub(Matrix3f left, Matrix3f right, Matrix3f dest) {
-        if (dest == null) {
+    public static Matrix3f sub(Matrix3f left, Matrix3f right, Matrix3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix3f();
         }
 
@@ -157,7 +172,8 @@ public class Matrix3f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix3f mul(Matrix3f target) {
+    public Matrix3f mul(Matrix3f target)
+    {
         float m00 = this.m00 * target.m00 + this.m10 * target.m01 + this.m20 * target.m02;
         float m01 = this.m01 * target.m00 + this.m11 * target.m01 + this.m21 * target.m02;
         float m02 = this.m02 * target.m00 + this.m12 * target.m01 + this.m22 * target.m02;
@@ -179,8 +195,10 @@ public class Matrix3f extends Matrix implements Serializable {
         return this;
     }
 
-    public static Matrix3f mul(Matrix3f left, Matrix3f right, Matrix3f dest) {
-        if (dest == null) {
+    public static Matrix3f mul(Matrix3f left, Matrix3f right, Matrix3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix3f();
         }
 
@@ -205,7 +223,8 @@ public class Matrix3f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix3f div(Matrix3f target) {
+    public Matrix3f div(Matrix3f target)
+    {
         float m00 = this.m00 / target.m00 + this.m10 / target.m01 + this.m20 / target.m02;
         float m01 = this.m01 / target.m00 + this.m11 / target.m01 + this.m21 / target.m02;
         float m02 = this.m02 / target.m00 + this.m12 / target.m01 + this.m22 / target.m02;
@@ -227,8 +246,10 @@ public class Matrix3f extends Matrix implements Serializable {
         return this;
     }
 
-    public static Matrix3f div(Matrix3f left, Matrix3f right, Matrix3f dest) {
-        if (dest == null) {
+    public static Matrix3f div(Matrix3f left, Matrix3f right, Matrix3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix3f();
         }
 
@@ -253,7 +274,8 @@ public class Matrix3f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix3f transform(Vector3f right) {
+    public Matrix3f transform(Vector3f right)
+    {
         this.m00 = this.m00 * right.x;
         this.m01 = this.m01 * right.x;
         this.m02 = this.m02 * right.x;
@@ -266,8 +288,10 @@ public class Matrix3f extends Matrix implements Serializable {
         return this;
     }
 
-    public static Matrix3f transform(Matrix3f left, Vector3f right, Matrix3f dest) {
-        if (dest == null) {
+    public static Matrix3f transform(Matrix3f left, Vector3f right, Matrix3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix3f();
         }
         dest.m00 = left.m00 * right.x;
@@ -282,16 +306,20 @@ public class Matrix3f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix transpose() {
+    public Matrix transpose()
+    {
         return transpose(this, this);
     }
 
-    public Matrix3f transpose(Matrix3f dest) {
+    public Matrix3f transpose(Matrix3f dest)
+    {
         return transpose(this, dest);
     }
 
-    public static Matrix3f transpose(Matrix3f src, Matrix3f dest) {
-        if (dest == null) {
+    public static Matrix3f transpose(Matrix3f src, Matrix3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix3f();
         }
 
@@ -316,12 +344,14 @@ public class Matrix3f extends Matrix implements Serializable {
         return dest;
     }
 
-    public float determinant() {
+    public float determinant()
+    {
         float f = this.m00 * (this.m11 * this.m22 - this.m12 * this.m21) + this.m01 * (this.m12 * this.m20 - this.m10 * this.m22) + this.m02 * (this.m10 * this.m21 - this.m11 * this.m20);
         return f;
     }
 
-    public String toString() {
+    public String toString()
+    {
         StringBuilder buf = new StringBuilder();
         buf.append(this.m00).append(' ').append(this.m10).append(' ').append(this.m20).append(' ').append('\n');
         buf.append(this.m01).append(' ').append(this.m11).append(' ').append(this.m21).append(' ').append('\n');
@@ -329,14 +359,18 @@ public class Matrix3f extends Matrix implements Serializable {
         return buf.toString();
     }
 
-    public Matrix invert() {
+    public Matrix invert()
+    {
         return invert(this, this);
     }
 
-    public static Matrix3f invert(Matrix3f src, Matrix3f dest) {
+    public static Matrix3f invert(Matrix3f src, Matrix3f dest)
+    {
         float determinant = src.determinant();
-        if (determinant != 0.0F) {
-            if (dest == null) {
+        if (determinant != 0.0F)
+        {
+            if (dest == null)
+            {
                 dest = new Matrix3f();
             }
 
@@ -360,21 +394,26 @@ public class Matrix3f extends Matrix implements Serializable {
             dest.m12 = t21 * determinant_inv;
             dest.m21 = t12 * determinant_inv;
             return dest;
-        } else {
+        } else
+        {
             return null;
         }
     }
 
-    public Matrix negate() {
+    public Matrix negate()
+    {
         return this.negate(this);
     }
 
-    public Matrix3f negate(Matrix3f dest) {
+    public Matrix3f negate(Matrix3f dest)
+    {
         return negate(this, dest);
     }
 
-    public static Matrix3f negate(Matrix3f src, Matrix3f dest) {
-        if (dest == null) {
+    public static Matrix3f negate(Matrix3f src, Matrix3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Matrix3f();
         }
 
@@ -390,11 +429,13 @@ public class Matrix3f extends Matrix implements Serializable {
         return dest;
     }
 
-    public Matrix setIdentity() {
+    public Matrix setIdentity()
+    {
         return setIdentity(this);
     }
 
-    public static Matrix3f setIdentity(Matrix3f m) {
+    public static Matrix3f setIdentity(Matrix3f m)
+    {
         m.m00 = 1.0F;
         m.m01 = 0.0F;
         m.m02 = 0.0F;
@@ -407,11 +448,13 @@ public class Matrix3f extends Matrix implements Serializable {
         return m;
     }
 
-    public Matrix setZero() {
+    public Matrix setZero()
+    {
         return setZero(this);
     }
 
-    public static Matrix3f setZero(Matrix3f m) {
+    public static Matrix3f setZero(Matrix3f m)
+    {
         m.m00 = 0.0F;
         m.m01 = 0.0F;
         m.m02 = 0.0F;

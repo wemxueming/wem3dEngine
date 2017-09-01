@@ -1,8 +1,10 @@
 import core.*;
 import core.control.FreeLook;
 
-public class Test {
-    public static void main(String[] args) {
+public class Test
+{
+    public static void main(String[] args)
+    {
         Window window = new Window();
         Camera camera = new Camera();
         Scene scene = new Scene(window, camera);

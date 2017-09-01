@@ -3,8 +3,10 @@ package math3d;
 import java.io.Serializable;
 import java.nio.FloatBuffer;
 
-public abstract class Matrix implements Serializable {
-    protected Matrix() {
+public abstract class Matrix implements Serializable
+{
+    protected Matrix()
+    {
     }
 
     public abstract Matrix setIdentity();

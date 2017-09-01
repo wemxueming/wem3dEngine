@@ -9,7 +9,8 @@ import util.MathUtil;
 
 import java.nio.FloatBuffer;
 
-public class Camera {
+public class Camera
+{
     private static FloatBuffer CAMERA_BUFFER = BufferUtils.createFloatBuffer(32);
     private static Matrix4f PROJECTION_MATRIX = new Matrix4f();
     private static Matrix4f VIEW_MATRIX = new Matrix4f();
@@ -23,7 +24,8 @@ public class Camera {
 
     private Buffer cameraBuffer;
 
-    public Camera(int width, int height, float fov, float near, float far, Vector3f position, Vector3f rotate) {
+    public Camera(int width, int height, float fov, float near, float far, Vector3f position, Vector3f rotate)
+    {
         this.width = width;
         this.height = height;
         this.fov = fov;
@@ -33,17 +35,20 @@ public class Camera {
         this.rotate = rotate;
     }
 
-    public Camera() {
+    public Camera()
+    {
         this(800, 600, 60f, 0.1f, 1000f, new Vector3f(0, 0, -1), new Vector3f(0, 0, 0));
     }
 
-    public void update() {
+    public void update()
+    {
         cameraBuffer.begin();
         cameraBuffer.setBuffer(0, getCameraBuffer());
         cameraBuffer.end();
     }
 
-    public FloatBuffer getCameraBuffer() {
+    public FloatBuffer getCameraBuffer()
+    {
         float aspectRatio = (float) width / (float) height;
         float yScale = MathUtil.coTangent(MathUtil.toRadians(fov / 2f));
         float xScale = yScale / aspectRatio;
@@ -66,63 +71,78 @@ public class Camera {
         return CAMERA_BUFFER;
     }
 
-    public void setCameraBuffer(Buffer cameraBuffer) {
+    public void setCameraBuffer(Buffer cameraBuffer)
+    {
         this.cameraBuffer = cameraBuffer;
     }
 
-    public int getWidth() {
+    public int getWidth()
+    {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(int width)
+    {
         this.width = width;
     }
 
-    public int getHeight() {
+    public int getHeight()
+    {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(int height)
+    {
         this.height = height;
     }
 
-    public float getFov() {
+    public float getFov()
+    {
         return fov;
     }
 
-    public void setFov(float fov) {
+    public void setFov(float fov)
+    {
         this.fov = fov;
     }
 
-    public float getNear() {
+    public float getNear()
+    {
         return near;
     }
 
-    public void setNear(float near) {
+    public void setNear(float near)
+    {
         this.near = near;
     }
 
-    public float getFar() {
+    public float getFar()
+    {
         return far;
     }
 
-    public void setFar(float far) {
+    public void setFar(float far)
+    {
         this.far = far;
     }
 
-    public Vector3f getPosition() {
+    public Vector3f getPosition()
+    {
         return position;
     }
 
-    public void setPosition(Vector3f position) {
+    public void setPosition(Vector3f position)
+    {
         this.position = position;
     }
 
-    public Vector3f getRotate() {
+    public Vector3f getRotate()
+    {
         return rotate;
     }
 
-    public void setRotate(Vector3f rotate) {
+    public void setRotate(Vector3f rotate)
+    {
         this.rotate = rotate;
     }
 }

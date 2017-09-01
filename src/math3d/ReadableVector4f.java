@@ -5,6 +5,7 @@
 
 package math3d;
 
-public interface ReadableVector4f extends ReadableVector3f {
+public interface ReadableVector4f extends ReadableVector3f
+{
     float getW();
 }

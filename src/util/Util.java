@@ -7,20 +7,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Util {
-    public static void out(String str) {
+public class Util
+{
+    public static void out(String str)
+    {
         System.out.println(str);
     }
 
-    public static List<Integer> asList(int[] arrays) {
+    public static List<Integer> asList(int[] arrays)
+    {
         List<Integer> list = new ArrayList<Integer>();
-        for (int i : arrays) {
+        for (int i : arrays)
+        {
             list.add(i);
         }
         return list;
     }
 
-    public static Map<String, Integer> getKeyboardMap() {
+    public static Map<String, Integer> getKeyboardMap()
+    {
         Map<String, Integer> keyMap = new HashMap<String, Integer>();
         keyMap.put("w", 17);
         keyMap.put("s", 31);
@@ -34,7 +39,8 @@ public class Util {
         return keyMap;
     }
 
-    public static Map<Float, Vector3f> getAttenuationMap() {
+    public static Map<Float, Vector3f> getAttenuationMap()
+    {
         Map<Float, Vector3f> map = new HashMap<Float, Vector3f>();
         map.put(7f, new Vector3f(1.0f, 0.7f, 1.8f));
         map.put(13f, new Vector3f(1.0f, 0.35f, 0.44f));

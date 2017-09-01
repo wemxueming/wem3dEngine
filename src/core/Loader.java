@@ -18,23 +18,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class Loader {
+public final class Loader
+{
     private static Map<String, Integer> SHADER_SOURCE = new HashMap<String, Integer>();
 
-    public static Shader load(String vertSrc, String fragSrc) {
+    public static Shader load(String vertSrc, String fragSrc)
+    {
         Shader shader = new Shader();
         int vert = 0;
-        if (SHADER_SOURCE.get(vertSrc) == null) {
+        if (SHADER_SOURCE.get(vertSrc) == null)
+        {
             vert = shader.createVertexShader(loadShaderSource(vertSrc));
             SHADER_SOURCE.put(vertSrc, vert);
-        } else {
+        } else
+        {
             vert = SHADER_SOURCE.get(vertSrc);
         }
         int frag = 0;
-        if (SHADER_SOURCE.get(fragSrc) == null) {
+        if (SHADER_SOURCE.get(fragSrc) == null)
+        {
             frag = shader.createFragmentShader(loadShaderSource(fragSrc));
             SHADER_SOURCE.put(fragSrc, frag);
-        } else {
+        } else
+        {
             frag = SHADER_SOURCE.get(fragSrc);
         }
         shader.addShader(vert);
@@ -43,14 +49,17 @@ public final class Loader {
         return shader;
     }
 
-    public static Model loadPlan(float width, float height, boolean faced) {
+    public static Model loadPlan(float width, float height, boolean faced)
+    {
         List<Vertex> vertexs = new ArrayList<Vertex>();
-        if (faced) {
+        if (faced)
+        {
             vertexs.add(new Vertex(new Vector3f(-width / 2, -height / 2, 0), new Vector2f(0, 0), new Vector3f(0, 0, 1)));
             vertexs.add(new Vertex(new Vector3f(width / 2, -height / 2, 0), new Vector2f(1, 0), new Vector3f(0, 0, 1)));
             vertexs.add(new Vertex(new Vector3f(-width / 2, height / 2, 0), new Vector2f(0, 1), new Vector3f(0, 0, 1)));
             vertexs.add(new Vertex(new Vector3f(width / 2, height / 2, 0), new Vector2f(1, 1), new Vector3f(0, 0, 1)));
-        } else {
+        } else
+        {
             vertexs.add(new Vertex(new Vector3f(-width / 2, 0, -height / 2), new Vector2f(0, 0), new Vector3f(0, 1, 0)));
             vertexs.add(new Vertex(new Vector3f(width / 2, 0, -height / 2), new Vector2f(1, 0), new Vector3f(0, 1, 0)));
             vertexs.add(new Vertex(new Vector3f(-width / 2, 0, height / 2), new Vector2f(0, 1), new Vector3f(0, 1, 0)));
@@ -66,25 +75,32 @@ public final class Loader {
         return new Model(BufferUtil.createF(vertexs), BufferUtil.createI(indices), mod);
     }
 
-    public static CharSequence loadShaderSource(String src) {
+    public static CharSequence loadShaderSource(String src)
+    {
         BufferedReader reader = null;
         String line;
         StringBuilder stringBuilder = new StringBuilder();
-        try {
+        try
+        {
             reader = new BufferedReader(new FileReader(src));
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith("#include ")) {
+            while ((line = reader.readLine()) != null)
+            {
+                if (line.startsWith("#include "))
+                {
                     String subFileSrc = line.split("\\s+")[1].trim();
                     CharSequence subFile = FileUtil.readFile(subFileSrc);
                     stringBuilder.append(subFile).append("\n");
-                } else {
+                } else
+                {
                     stringBuilder.append(line).append("\n");
                 }
             }
             reader.close();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e)
+        {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
         return stringBuilder;

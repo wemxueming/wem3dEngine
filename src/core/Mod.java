@@ -1,17 +1,21 @@
 package core;
 
-public class Mod {
+public class Mod
+{
     private Mesh[] meshes;
 
-    public Mod(Mesh[] meshes) {
+    public Mod(Mesh[] meshes)
+    {
         this.meshes = meshes;
     }
 
-    public Mesh[] getMeshes() {
+    public Mesh[] getMeshes()
+    {
         return meshes;
     }
 
-    public void setMeshes(Mesh[] meshes) {
+    public void setMeshes(Mesh[] meshes)
+    {
         this.meshes = meshes;
     }
 }

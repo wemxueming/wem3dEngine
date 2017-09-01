@@ -7,7 +7,8 @@ package math3d;
 
 import java.nio.FloatBuffer;
 
-public interface ReadableVector {
+public interface ReadableVector
+{
     float length();
 
     float lengthSquared();

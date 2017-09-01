@@ -8,114 +8,141 @@ package math3d;
 import java.io.Serializable;
 import java.nio.FloatBuffer;
 
-public class Vector3f extends Vector implements Serializable, ReadableVector3f, WritableVector3f {
+public class Vector3f extends Vector implements Serializable, ReadableVector3f, WritableVector3f
+{
     public static Vector3f ZERO = new Vector3f(0);
     private static final long serialVersionUID = 1L;
     public float x;
     public float y;
     public float z;
 
-    public Vector3f() {
+    public Vector3f()
+    {
     }
 
-    public Vector3f(ReadableVector3f src) {
+    public Vector3f(ReadableVector3f src)
+    {
         this.set(src);
     }
 
-    public Vector3f(float x, float y, float z) {
+    public Vector3f(float x, float y, float z)
+    {
         this.set(x, y, z);
     }
 
-    public Vector3f(float f) {
+    public Vector3f(float f)
+    {
         this.set(f, f, f);
     }
 
-    public void set(float x, float y) {
+    public void set(float x, float y)
+    {
         this.x = x;
         this.y = y;
     }
 
-    public void set(float x, float y, float z) {
+    public void set(float x, float y, float z)
+    {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vector3f set(ReadableVector3f src) {
+    public Vector3f set(ReadableVector3f src)
+    {
         this.x = src.getX();
         this.y = src.getY();
         this.z = src.getZ();
         return this;
     }
 
-    public float lengthSquared() {
+    public float lengthSquared()
+    {
         return this.x * this.x + this.y * this.y + this.z * this.z;
     }
 
-    public Vector3f translate(float x, float y, float z) {
+    public Vector3f translate(float x, float y, float z)
+    {
         this.x += x;
         this.y += y;
         this.z += z;
         return this;
     }
 
-    public Vector3f add(Vector3f target) {
+    public Vector3f add(Vector3f target)
+    {
         this.set(this.x + target.x, this.y + target.y, this.z + target.z);
         return this;
     }
 
-    public static Vector3f add(Vector3f left, Vector3f right, Vector3f dest) {
-        if (dest == null) {
+    public static Vector3f add(Vector3f left, Vector3f right, Vector3f dest)
+    {
+        if (dest == null)
+        {
             return new Vector3f(left.x + right.x, left.y + right.y, left.z + right.z);
-        } else {
+        } else
+        {
             dest.set(left.x + right.x, left.y + right.y, left.z + right.z);
             return dest;
         }
     }
 
-    public Vector3f sub(Vector3f right) {
+    public Vector3f sub(Vector3f right)
+    {
         this.set(this.x - right.x, this.y - right.y, this.z - right.z);
         return this;
     }
 
-    public static Vector3f sub(Vector3f left, Vector3f right, Vector3f dest) {
-        if (dest == null) {
+    public static Vector3f sub(Vector3f left, Vector3f right, Vector3f dest)
+    {
+        if (dest == null)
+        {
             return new Vector3f(left.x - right.x, left.y - right.y, left.z - right.z);
-        } else {
+        } else
+        {
             dest.set(left.x - right.x, left.y - right.y, left.z - right.z);
             return dest;
         }
     }
 
-    public Vector3f mul(float target) {
+    public Vector3f mul(float target)
+    {
         this.set(this.x * target, this.y * target, this.z * target);
         return this;
     }
 
-    public static Vector3f mul(Vector3f left, float value, Vector3f dest) {
-        if (dest == null) {
+    public static Vector3f mul(Vector3f left, float value, Vector3f dest)
+    {
+        if (dest == null)
+        {
             return new Vector3f(left.x * value, left.y * value, left.z * value);
-        } else {
+        } else
+        {
             dest.set(left.x * value, left.y * value, left.z * value);
             return dest;
         }
     }
 
-    public Vector3f div(float target) {
+    public Vector3f div(float target)
+    {
         this.set(this.x / target, this.y / target, this.z / target);
         return this;
     }
 
-    public static Vector3f div(Vector3f left, float value, Vector3f dest) {
-        if (dest == null) {
+    public static Vector3f div(Vector3f left, float value, Vector3f dest)
+    {
+        if (dest == null)
+        {
             return new Vector3f(left.x / value, left.y / value, left.z / value);
-        } else {
+        } else
+        {
             dest.set(left.x / value, left.y / value, left.z / value);
             return dest;
         }
     }
 
-    public Vector3f transform(Matrix3f target) {
+    public Vector3f transform(Matrix3f target)
+    {
         float x = target.m00 * this.x + target.m10 * this.y + target.m20 * this.z;
         float y = target.m01 * this.x + target.m11 * this.y + target.m21 * this.z;
         float z = target.m02 * this.x + target.m12 * this.y + target.m22 * this.z;
@@ -125,8 +152,10 @@ public class Vector3f extends Vector implements Serializable, ReadableVector3f, 
         return this;
     }
 
-    public static Vector3f transform(Matrix3f left, Vector3f right, Vector3f dest) {
-        if (dest == null) {
+    public static Vector3f transform(Matrix3f left, Vector3f right, Vector3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Vector3f();
         }
 
@@ -139,8 +168,10 @@ public class Vector3f extends Vector implements Serializable, ReadableVector3f, 
         return dest;
     }
 
-    public static Vector3f cross(Vector3f left, Vector3f right, Vector3f dest) {
-        if (dest == null) {
+    public static Vector3f cross(Vector3f left, Vector3f right, Vector3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Vector3f();
         }
 
@@ -148,15 +179,18 @@ public class Vector3f extends Vector implements Serializable, ReadableVector3f, 
         return dest;
     }
 
-    public Vector negate() {
+    public Vector negate()
+    {
         this.x = -this.x;
         this.y = -this.y;
         this.z = -this.z;
         return this;
     }
 
-    public Vector3f negate(Vector3f dest) {
-        if (dest == null) {
+    public Vector3f negate(Vector3f dest)
+    {
+        if (dest == null)
+        {
             dest = new Vector3f();
         }
 
@@ -166,60 +200,72 @@ public class Vector3f extends Vector implements Serializable, ReadableVector3f, 
         return dest;
     }
 
-    public Vector3f normalize() {
+    public Vector3f normalize()
+    {
         float l = this.length();
         this.set(this.x / l, this.y / l, this.z / l);
         return this;
     }
 
-    public Vector3f normalize(Vector3f dest) {
+    public Vector3f normalize(Vector3f dest)
+    {
         float l = this.length();
-        if (dest == null) {
+        if (dest == null)
+        {
             dest = new Vector3f(this.x / l, this.y / l, this.z / l);
-        } else {
+        } else
+        {
             dest.set(this.x / l, this.y / l, this.z / l);
         }
 
         return dest;
     }
 
-    public static float dot(Vector3f left, Vector3f right) {
+    public static float dot(Vector3f left, Vector3f right)
+    {
         return left.x * right.x + left.y * right.y + left.z * right.z;
     }
 
-    public static float angle(Vector3f a, Vector3f b) {
+    public static float angle(Vector3f a, Vector3f b)
+    {
         float dls = dot(a, b) / (a.length() * b.length());
-        if (dls < -1.0F) {
+        if (dls < -1.0F)
+        {
             dls = -1.0F;
-        } else if (dls > 1.0F) {
+        } else if (dls > 1.0F)
+        {
             dls = 1.0F;
         }
 
         return (float) Math.acos((double) dls);
     }
 
-    public Vector load(FloatBuffer buf) {
+    public Vector load(FloatBuffer buf)
+    {
         this.x = buf.get();
         this.y = buf.get();
         this.z = buf.get();
         return this;
     }
 
-    public Vector scale(float scale) {
+    public Vector scale(float scale)
+    {
         this.x *= scale;
         this.y *= scale;
         this.z *= scale;
         return this;
     }
 
-    public Vector store(FloatBuffer buf) {
+    public Vector store(FloatBuffer buf)
+    {
         buf.put(this.x);
         buf.put(this.y);
         buf.put(this.z);
         return this;
     }
 
-    public String toString() {
+    public String toString()
+    {
         StringBuilder sb = new StringBuilder(64);
         sb.append("Vector3f[");
         sb.append(this.x);
@@ -231,38 +277,49 @@ public class Vector3f extends Vector implements Serializable, ReadableVector3f, 
         return sb.toString();
     }
 
-    public final float getX() {
+    public final float getX()
+    {
         return this.x;
     }
 
-    public final float getY() {
+    public final float getY()
+    {
         return this.y;
     }
 
-    public final void setX(float x) {
+    public final void setX(float x)
+    {
         this.x = x;
     }
 
-    public final void setY(float y) {
+    public final void setY(float y)
+    {
         this.y = y;
     }
 
-    public void setZ(float z) {
+    public void setZ(float z)
+    {
         this.z = z;
     }
 
-    public float getZ() {
+    public float getZ()
+    {
         return this.z;
     }
 
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
             return true;
-        } else if (obj == null) {
+        } else if (obj == null)
+        {
             return false;
-        } else if (this.getClass() != obj.getClass()) {
+        } else if (this.getClass() != obj.getClass())
+        {
             return false;
-        } else {
+        } else
+        {
             Vector3f other = (Vector3f) obj;
             return this.x == other.x && this.y == other.y && this.z == other.z;
         }

@@ -8,11 +8,14 @@ package math3d;
 import java.io.Serializable;
 import java.nio.FloatBuffer;
 
-public abstract class Vector implements Serializable, ReadableVector {
-    protected Vector() {
+public abstract class Vector implements Serializable, ReadableVector
+{
+    protected Vector()
+    {
     }
 
-    public final float length() {
+    public final float length()
+    {
         return (float) Math.sqrt((double) this.lengthSquared());
     }
 
@@ -22,12 +25,15 @@ public abstract class Vector implements Serializable, ReadableVector {
 
     public abstract Vector negate();
 
-    public final Vector normalise() {
+    public final Vector normalise()
+    {
         float len = this.length();
-        if (len != 0.0F) {
+        if (len != 0.0F)
+        {
             float l = 1.0F / len;
             return this.scale(l);
-        } else {
+        } else
+        {
             throw new IllegalStateException("Zero length vector");
         }
     }
