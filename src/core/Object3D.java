@@ -1,118 +1,92 @@
 package core;
 
-import core.util.Buf;
-import core.util.Cal;
-import core.util.math3d.Mat4;
-import core.util.math3d.Vec3;
+import math3d.Matrix4f;
+import math3d.Vector3f;
 import org.lwjgl.BufferUtils;
+import util.BufferUtil;
+import util.MathUtil;
 
 import java.nio.FloatBuffer;
 
+public class Object3D {
+    private static FloatBuffer TRANSFORM_BUFFER = BufferUtils.createFloatBuffer(16);
+    private static Matrix4f TRANSFORM_MATRIX = new Matrix4f();
+    private static int ID = 0;
+    private int id;
+    private Vector3f position;
+    private Vector3f rotate;
+    private Vector3f scale;
 
-public class Object3D
-{
-	public static final int TRANSFORM_SIZE = 64;
-	private FloatBuffer TRANSFORM_BUFFER = BufferUtils.createFloatBuffer(TRANSFORM_SIZE / 4);
-	private static Mat4 TRANSFORM_MAT4 = new Mat4();
-	private static int ID = -1;
+    private Model model;
+    private int modId;
 
-	private int id;
-	private Model model;
-	private Mod mod;
+    public Object3D() {
+        this(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+    }
 
-	private Vec3 position = new Vec3(0,0,0);
-	private Vec3 rotate = new Vec3(0,0,0);
-	private Vec3 scale = new Vec3(1,1,1);
+    public Object3D(Vector3f position, Vector3f rotate, Vector3f scale) {
+        id = ID++;
+        this.position = position;
+        this.rotate = rotate;
+        this.scale = scale;
+    }
 
-	public Object3D(Model model)
-	{
-		id = ++ID;
-		this.model = model;
-		model.add(this);
-		mod = model.getMod(Model.DEFAULT_MOD_NAME);
-	}
+    public void setModel(Model model) {
+        this.model = model;
+        model.getObject3DMap().put(id, this);
+        modId = model.getModId(Model.DEFAULT_MOD_NAME);
+    }
 
-	public Model getModel()
-	{
-		return model;
-	}
+    public void setMod(String modName) {
+        Integer id = model.getModId(modName);
+        if (id == null) {
+            modId = model.getModId(Model.DEFAULT_MOD_NAME);
+            System.out.println("have not found mod name of " + modName);
+        } else {
+            modId = id;
+        }
+    }
 
-	public void translate(float x, float y, float z)
-	{
-		position.set(x, y, z);
-	}
+    public FloatBuffer getTransformBuffer() {
+        TRANSFORM_MATRIX.setIdentity();
+        Matrix4f.translate(position, TRANSFORM_MATRIX, TRANSFORM_MATRIX);
+        Matrix4f.rotate(MathUtil.toRadians(rotate.x), MathUtil.X_AXIS, TRANSFORM_MATRIX, TRANSFORM_MATRIX);
+        Matrix4f.rotate(MathUtil.toRadians(rotate.y), MathUtil.Y_AXIS, TRANSFORM_MATRIX, TRANSFORM_MATRIX);
+        Matrix4f.rotate(MathUtil.toRadians(rotate.z), MathUtil.Z_AXIS, TRANSFORM_MATRIX, TRANSFORM_MATRIX);
+        Matrix4f.scale(scale, TRANSFORM_MATRIX, TRANSFORM_MATRIX);
+        BufferUtil.update(TRANSFORM_BUFFER, TRANSFORM_MATRIX);
+        return TRANSFORM_BUFFER;
+    }
 
-	public void rotateX(float angle)
-	{
-		rotate.setX(angle);
-	}
+    public int getModId() {
+        return modId;
+    }
 
-	public void rotateY(float angle)
-	{
-		rotate.setY(angle);
-	}
+    public Vector3f getPosition() {
+        return position;
+    }
 
-	public void rotateZ(float angle)
-	{
-		rotate.setZ(angle);
-	}
+    public void setPosition(Vector3f position) {
+        this.position = position;
+    }
 
-	public void scale(float s)
-	{
-		scale.set(s, s, s);
-	}
+    public Vector3f getRotate() {
+        return rotate;
+    }
 
-	public void setMod(String name)
-	{
-		Mod mod = model.getMod(name);
-		if (mod == null)
-		{
-			System.out.println("ERROR : can not find Mod of name: " + name);
-		}
-		else
-		{
-			this.mod = mod;
-		}
-	}
+    public void setRotate(Vector3f rotate) {
+        this.rotate = rotate;
+    }
 
-	public Mod getMod()
-	{
-		return mod;
-	}
+    public Vector3f getScale() {
+        return scale;
+    }
 
-	public Vec3 getPosition()
-	{
-		return position;
-	}
+    public void setScale(Vector3f scale) {
+        this.scale = scale;
+    }
 
-	public Vec3 getRotate()
-	{
-		return rotate;
-	}
-
-	public Vec3 getScale()
-	{
-		return scale;
-	}
-
-	public Mat4 getTransformMatrix()
-	{
-		TRANSFORM_MAT4.setIdentity();
-		Mat4.translate(position, TRANSFORM_MAT4, TRANSFORM_MAT4);
-		Mat4.rotate(Cal.toRadians(rotate.x), Cal.X_AXIS, TRANSFORM_MAT4, TRANSFORM_MAT4);
-		Mat4.rotate(Cal.toRadians(rotate.y), Cal.Y_AXIS, TRANSFORM_MAT4, TRANSFORM_MAT4);
-		Mat4.rotate(Cal.toRadians(rotate.z), Cal.Z_AXIS, TRANSFORM_MAT4, TRANSFORM_MAT4);
-		Mat4.scale(scale, TRANSFORM_MAT4, TRANSFORM_MAT4);
-		return TRANSFORM_MAT4;
-	}
-
-	public FloatBuffer getTransformBuffer()
-	{
-		return Buf.update(TRANSFORM_BUFFER, TRANSFORM_MAT4);
-	}
-
-	public int getId()
-	{
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 }

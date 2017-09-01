@@ -1,79 +1,83 @@
 package core;
-import core.util.OGL;
-import org.lwjgl.opengl.GL30;
+
+import core.gl.Buffer;
+import core.gl.VertexArray;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Model
-{
-	public static final String DEFAULT_MOD_NAME = "default";
-	private int vao;
-	private int vbo;
-	private int ebo;
+public class Model {
+    public static String DEFAULT_MOD_NAME = "default";
+    private VertexArray vertexArray;
+    private Buffer arrayBuffer;
+    private Buffer elementBuffer;
+    private Buffer transformBuffer;
+    private Map<Integer, Object3D> object3DMap = new HashMap<Integer, Object3D>();
+    private Map<Integer, Mod> modMap = new HashMap<Integer, Mod>();
+    private Map<String, Integer> modNameMap = new HashMap<String, Integer>();
+    private int modId;
 
-	private Map<Integer, Object3D> instances = new HashMap<Integer, Object3D>();
-	private Map<String, Mod> mods = new HashMap<String, Mod>();
+    public Model(FloatBuffer vertexBuffer, IntBuffer indiceBuffer, Mod mod) {
+        vertexArray = new VertexArray();
+        vertexArray.begin();
+        arrayBuffer = new Buffer(vertexBuffer, 0, 3, 2, 3);
+        vertexArray.end();
+        elementBuffer = new Buffer(indiceBuffer);
+        addMod(DEFAULT_MOD_NAME, mod);
+    }
 
-	public Model(FloatBuffer vBuffer, IntBuffer iBuffer, Mod defaultMod)
-	{
-		vao = OGL.createVertexArray();
-		GL30.glBindVertexArray(vao);
-		vbo = OGL.createBuffer(vBuffer, 0, 3,2,3);
-		GL30.glBindVertexArray(0);
-		ebo = OGL.createBuffer(iBuffer);
-		add(DEFAULT_MOD_NAME, defaultMod);
-	}
+    public void update() {
+        vertexArray.begin();
+        elementBuffer.begin();
+        for (Object3D object3D : object3DMap.values()) {
+            transformBuffer.begin();
+            transformBuffer.setBuffer(0, object3D.getTransformBuffer());
+            transformBuffer.end();
+            for (Mesh mesh : modMap.get(object3D.getModId()).getMeshes()) {
+                vertexArray.drawTriangle(mesh.getCount());
+            }
+        }
+        elementBuffer.end();
+        vertexArray.end();
+    }
 
-	public int getVao()
-	{
-		return vao;
-	}
+    public void addMod(String name, Mod mod) {
+        if (modNameMap.get(name) == null) {
+            modNameMap.put(name, modId);
+            modMap.put(modId, mod);
+            modId++;
+        } else {
+            modMap.put(modNameMap.get(name), mod);
+        }
+    }
 
-	public int getVbo()
-	{
-		return vbo;
-	}
+    public Integer getModId(String name) {
+        return modNameMap.get(name);
+    }
 
-	public int getEbo()
-	{
-		return ebo;
-	}
+    public void setTransformBuffer(Buffer transformBuffer) {
+        this.transformBuffer = transformBuffer;
+    }
 
-	public Mod getMod(String name)
-	{
-		return mods.get(name);
-	}
+    public Map<Integer, Object3D> getObject3DMap() {
+        return object3DMap;
+    }
 
-	public void add(String name, Mod mod)
-	{
-		mods.put(name, mod);
-	}
+    public void setObject3DMap(Map<Integer, Object3D> object3DMap) {
+        this.object3DMap = object3DMap;
+    }
 
-	public void add(Object3D object3D)
-	{
-		instances.put(object3D.getId(), object3D);
-	}
+    public Map<Integer, Mod> getModMap() {
+        return modMap;
+    }
 
-	public Map<Integer, Object3D> getInstances()
-	{
-		return instances;
-	}
+    public void setModMap(Map<Integer, Mod> modMap) {
+        this.modMap = modMap;
+    }
 
-	public void setInstances(Map<Integer, Object3D> instances)
-	{
-		this.instances = instances;
-	}
-
-	public Map<String, Mod> getMods()
-	{
-		return mods;
-	}
-
-	public void setMods(Map<String, Mod> mods)
-	{
-		this.mods = mods;
-	}
+    public int getId() {
+        return vertexArray.getId();
+    }
 }

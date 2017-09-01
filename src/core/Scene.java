@@ -1,274 +1,119 @@
 package core;
-import core.util.OGL;
-import core.util.Utils;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.*;
+
+import core.gl.Buffer;
+import core.gl.Contexts;
+import core.gl.Shader;
+import org.lwjgl.opengl.GL11;
+import util.Util;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Scene
-{
-	private boolean running;
-	private long time;
-	private long lastDeltaTime;
-	private long lastFrameTime;
-	private int frame;
-	private int delta;
-	private int fps;
+public class Scene {
+    private boolean running;
+    private Timer timer;
+    private Window window;
+    private Camera camera;
+    private Control control;
+    private Shader modelShader;
+    private Buffer cameraBuffer;
+    private Buffer transformBuffer;
+    private Map<Integer, Model> modelMap = new HashMap<Integer, Model>();
 
-	private String title = "wem3d scene";
-	private int width = 800;
-	private int height = 600;
-	private boolean fullScreen = false;
-	private boolean syncFps= true;
-	private int maxFps = 100;
+    public Scene(Window window, Camera camera) {
+        this.window = window;
+        this.camera = camera;
+        init();
+    }
 
-	private Renderer renderer;
-	private Control control;
-	private Camera camera;
-	private Map<Integer, Object3D> obj3ds = new HashMap<Integer, Object3D>();
-	private Map<Integer, Model> models = new HashMap<Integer, Model>();
-	private Map<Integer, Light> lights = new HashMap<Integer, Light>();
+    protected void init() {
+        timer = new Timer();
+        control = new Control();
 
-	public Scene()
-	{
-		init();
-		renderer = new Renderer(10);
-		control = new Control();
-		camera = new Camera();
-	}
+        modelShader = Loader.load("src/shader/model.vert", "src/shader/model.frag");
 
-	protected void init()
-	{
-		setTitle(title);
-		setMode(width, height, fullScreen);
-		PixelFormat pixelFormat = new PixelFormat();
-		ContextAttribs contextAttribs = new ContextAttribs(4, 4)
-				.withForwardCompatible(true).withProfileCore(true);
-		try
-		{
-			Display.create(pixelFormat, contextAttribs);
-		}
-		catch (LWJGLException e)
-		{
-			e.printStackTrace();
-			System.exit(0);
-		}
-		GL11.glViewport(0,0, width, height);
-	}
+        cameraBuffer = new Buffer(64 * 2, 0);
+        transformBuffer = new Buffer(64, 1);
 
-	public void run()
-	{
-		lastDeltaTime = Utils.getTime();
-		lastFrameTime = Utils.getTime();
-		running = Display.isCreated();
-		while (running && !Display.isCloseRequested())
-		{
-			control.update(delta);
-			renderer.render(this);
-			if (syncFps)
-			{
-				Display.sync(maxFps);
-			}
-			Display.update();
-			updateTime();
-		}
-		OGL.destroy();
-		Display.destroy();
-	}
+        camera.setCameraBuffer(cameraBuffer);
+    }
 
-	public void add(Model model)
-	{
-		models.put(model.getVao(), model);
-	}
+    public void start() {
+        Util.out("The scene start running success!");
+        timer.start();
+        running = window.isCreated();
+    }
 
-	public void add(Object3D object3D)
-	{
-		obj3ds.put(object3D.getId(), object3D);
-		Model model = object3D.getModel();
-		if (models.get(model.getVao()) == null)
-		{
-			add(model);
-		}
-	}
+    public void render() {
+        start();
+        while (running && !window.isClosed()) {
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            control.update(timer.getDelta());
+            camera.update();
+            modelShader.begin();
+            for (Model model : modelMap.values()) {
+                model.update();
+            }
+            modelShader.end();
+            window.update();
+            timer.update();
+        }
+        clean();
+    }
 
-	public void add(String name, Controller controller)
-	{
-		control.getControllers().put(name, controller);
-	}
+    public void clean() {
+        Contexts.getContexts().destroy();
+        window.destroy();
+        Util.out("The scene stop running success!");
+    }
 
-	public void add(Light light)
-	{
-		lights.put(light.getId(), light);
-	}
+    public void add(String name, Controller controller) {
+        control.getControllers().put(name, controller);
+    }
 
-	protected void updateTime()
-	{
-		time = Utils.getTime();
-		delta = (int)(time - lastDeltaTime);
-		lastDeltaTime = time;
-		if (Utils.getTime() - lastFrameTime > 1000)
-		{
-			fps = frame;
-			frame = 0;
-			lastFrameTime += 1000;
-		}
-		frame ++;
-		//System.out.println(fps);
-	}
+    public void add(Model model) {
+        modelMap.put(model.getId(), model);
+        model.setTransformBuffer(transformBuffer);
+    }
 
-	public void setTitle(String title)
-	{
-		this.title = title;
-		Display.setTitle(title);
-	}
+    public boolean isRunning() {
+        return running;
+    }
 
-	public void setMode(int width, int height, boolean fullScreen)
-	{
-		this.width = width;
-		this.height = height;
-		this.fullScreen = fullScreen;
-		if ((Display.getDisplayMode().getWidth() == width) && (Display.getDisplayMode().getHeight() == height) && (Display.isFullscreen() == fullScreen))
-		{
-			return;
-		}
-		try
-		{
-			DisplayMode targetDisplayMode = null;
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 
-			if (fullScreen)
-			{
-				DisplayMode[] modes = Display.getAvailableDisplayModes();
-				int freq = 0;
+    public Timer getTimer() {
+        return timer;
+    }
 
-				for (int i = 0; i < modes.length; i++)
-				{
-					DisplayMode current = modes[i];
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
 
-					if ((current.getWidth() == width) && (current.getHeight() == height))
-					{
-						if ((targetDisplayMode == null) || (current.getFrequency() >= freq))
-						{
-							if ((targetDisplayMode == null) || (current.getBitsPerPixel() > targetDisplayMode.getBitsPerPixel()))
-							{
-								targetDisplayMode = current;
-								freq = targetDisplayMode.getFrequency();
-							}
-						}
+    public Window getWindow() {
+        return window;
+    }
 
-						if ((current.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel()) && (current.getFrequency() == Display.getDesktopDisplayMode().getFrequency()))
-						{
-							targetDisplayMode = current;
-							break;
-						}
-					}
-				}
-			} else
-			{
-				targetDisplayMode = new DisplayMode(width, height);
-			}
-			if (targetDisplayMode == null)
-			{
-				System.out.println("Failed to find value mode: " + width + "x" + height + " fs=" + fullScreen);
-				return;
-			}
-			Display.setDisplayMode(targetDisplayMode);
-			Display.setFullscreen(fullScreen);
+    public void setWindow(Window window) {
+        this.window = window;
+    }
 
-		} catch (LWJGLException e)
-		{
-			System.out.println("Unable to setup mode " + width + "x" + height + " fullscreen=" + fullScreen + e);
-		}
-	}
+    public Camera getCamera() {
+        return camera;
+    }
 
-	public String getTitle()
-	{
-		return title;
-	}
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
 
-	public int getWidth()
-	{
-		return width;
-	}
+    public Control getControl() {
+        return control;
+    }
 
-	public int getHeight()
-	{
-		return height;
-	}
-
-	public boolean isFullScreen()
-	{
-		return fullScreen;
-	}
-
-	public boolean isSyncFps()
-	{
-		return syncFps;
-	}
-
-	public void setSyncFps(boolean syncFps)
-	{
-		this.syncFps = syncFps;
-	}
-
-	public int getMaxFps()
-	{
-		return maxFps;
-	}
-
-	public void setMaxFps(int maxFps)
-	{
-		this.maxFps = maxFps;
-	}
-
-	public Camera getCamera()
-	{
-		return camera;
-	}
-
-	public Map<Integer, Model> getModels()
-	{
-		return models;
-	}
-
-	public Renderer getRenderer()
-	{
-		return renderer;
-	}
-
-	public void setRenderer(Renderer renderer)
-	{
-		this.renderer = renderer;
-	}
-
-	public Control getControl()
-	{
-		return control;
-	}
-
-	public void setControl(Control control)
-	{
-		this.control = control;
-	}
-
-	public void setCamera(Camera camera)
-	{
-		this.camera = camera;
-	}
-
-	public void setModels(Map<Integer, Model> models)
-	{
-		this.models = models;
-	}
-
-	public Map<Integer, Light> getLights()
-	{
-		return lights;
-	}
-
-	public void setLights(Map<Integer, Light> lights)
-	{
-		this.lights = lights;
-	}
+    public void setControl(Control control) {
+        this.control = control;
+    }
 }

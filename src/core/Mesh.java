@@ -1,32 +1,17 @@
 package core;
-public class Mesh
-{
-	private int indiceCount;
-	private Material material;
 
-	public Mesh(int indiceCount, Material material)
-	{
-		this.indiceCount = indiceCount;
-		this.material = material;
-	}
+public class Mesh {
+    private int count;
 
-	public Material getMaterial()
-	{
-		return material;
-	}
+    public Mesh(int count) {
+        this.count = count;
+    }
 
-	public void setMaterial(Material material)
-	{
-		this.material = material;
-	}
+    public int getCount() {
+        return count;
+    }
 
-	public int getIndiceCount()
-	{
-		return indiceCount;
-	}
-
-	public void setIndiceCount(int indiceCount)
-	{
-		this.indiceCount = indiceCount;
-	}
+    public void setCount(int count) {
+        this.count = count;
+    }
 }
