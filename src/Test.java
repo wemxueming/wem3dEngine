@@ -1,5 +1,7 @@
 import core.*;
 import core.control.FreeLook;
+import core.light.DirectionLight;
+import math3d.Vector3f;
 
 public class Test
 {
@@ -11,13 +13,15 @@ public class Test
 
         FreeLook freeLook = new FreeLook(camera);
         freeLook.setActive(true);
-        scene.add("freeLook", freeLook);
+        scene.add(freeLook);
 
-        Model planModel = Loader.loadPlan(1, 1, true);
-        scene.add(planModel);
+        DirectionLight d1 = new DirectionLight(new Vector3f(0,1,0));
+        scene.add(d1);
 
+        Model plan = scene.getLoader().loadPlan();
         Object3D o1 = new Object3D();
-        o1.setModel(planModel);
+        o1.build(plan);
+        o1.setActive(true);
 
         scene.render();
     }

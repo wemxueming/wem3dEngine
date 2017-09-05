@@ -17,9 +17,10 @@ public class Object3D
     private Vector3f position;
     private Vector3f rotate;
     private Vector3f scale;
+    private boolean active;
 
     private Model model;
-    private int modId;
+    private Mod mod;
 
     public Object3D()
     {
@@ -34,27 +35,7 @@ public class Object3D
         this.scale = scale;
     }
 
-    public void setModel(Model model)
-    {
-        this.model = model;
-        model.getObject3DMap().put(id, this);
-        modId = model.getModId(Model.DEFAULT_MOD_NAME);
-    }
-
-    public void setMod(String modName)
-    {
-        Integer id = model.getModId(modName);
-        if (id == null)
-        {
-            modId = model.getModId(Model.DEFAULT_MOD_NAME);
-            System.out.println("have not found mod name of " + modName);
-        } else
-        {
-            modId = id;
-        }
-    }
-
-    public FloatBuffer getTransformBuffer()
+    public FloatBuffer buffer()
     {
         TRANSFORM_MATRIX.setIdentity();
         Matrix4f.translate(position, TRANSFORM_MATRIX, TRANSFORM_MATRIX);
@@ -66,9 +47,31 @@ public class Object3D
         return TRANSFORM_BUFFER;
     }
 
-    public int getModId()
+    public void build(Model model)
     {
-        return modId;
+        this.model = model;
+        model.getObject3DMap().put(id(), this);
+        mod = model.getModMap().get(Model.DEFAULT_MOD);
+    }
+
+    public Mod getMod()
+    {
+        return mod;
+    }
+
+    public void setMod(Mod mod)
+    {
+        this.mod = mod;
+    }
+
+    public boolean isActive()
+    {
+        return active;
+    }
+
+    public void setActive(boolean active)
+    {
+        this.active = active;
     }
 
     public Vector3f getPosition()
@@ -101,7 +104,7 @@ public class Object3D
         this.scale = scale;
     }
 
-    public int getId()
+    public int id()
     {
         return id;
     }

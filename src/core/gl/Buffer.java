@@ -2,6 +2,7 @@ package core.gl;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
+import util.BufferUtil;
 import util.MathUtil;
 
 import java.nio.FloatBuffer;
@@ -9,6 +10,7 @@ import java.nio.IntBuffer;
 
 public class Buffer
 {
+    private static IntBuffer INT_BUFFER = BufferUtils.createIntBuffer(1);
     private int id;
     private int target;
 
@@ -58,9 +60,14 @@ public class Buffer
         GL15.glBindBuffer(target, id);
     }
 
-    public void setBuffer(int location, FloatBuffer buffer)
+    public void put(int location, FloatBuffer buffer)
     {
         GL15.glBufferSubData(target, location, buffer);
+    }
+
+    public void put(int location, int value)
+    {
+        GL15.glBufferSubData(target, location, BufferUtil.update(INT_BUFFER, value));
     }
 
     public void end()
@@ -85,7 +92,7 @@ public class Buffer
         }
     }
 
-    public int getId()
+    public int id()
     {
         return id;
     }

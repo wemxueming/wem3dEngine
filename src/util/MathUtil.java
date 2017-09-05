@@ -39,6 +39,7 @@ public class MathUtil
 
     public static int toCompare(int i1, int i2)
     {
+
         if (i1 > i2)
         {
             return i1;
@@ -47,5 +48,10 @@ public class MathUtil
             return i2;
 
         }
+    }
+
+    public static float toSpot(float angle)
+    {
+        return (float)Math.cos(MathUtil.toRadians(angle));
     }
 }

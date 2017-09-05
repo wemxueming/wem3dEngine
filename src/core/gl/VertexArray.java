@@ -45,7 +45,7 @@ public class VertexArray
         location += indiceCount * MathUtil.FLOAT_BIT;
     }
 
-    public int getId()
+    public int id()
     {
         return id;
     }

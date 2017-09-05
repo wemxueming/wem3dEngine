@@ -48,4 +48,15 @@ public class BufferUtil
         buffer.flip();
         return buffer;
     }
+
+    public static IntBuffer update(IntBuffer buffer, int...values)
+    {
+        buffer.clear();
+        for (int value : values)
+        {
+            buffer.put(value);
+        }
+        buffer.flip();
+        return buffer;
+    }
 }

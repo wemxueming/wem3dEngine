@@ -21,32 +21,27 @@ public class Shader
         program = Contexts.getContexts().createProgram();
     }
 
-    public int createVertexShader(CharSequence string)
+    public void createVertexShader(CharSequence string)
     {
         int shader = Contexts.getContexts().createShader(program, GL20.GL_VERTEX_SHADER);
         GL20.glShaderSource(shader, string);
         GL20.glCompileShader(shader);
-        return shader;
+        GL20.glAttachShader(program, shader);
     }
 
-    public int createFragmentShader(CharSequence string)
+    public void createFragmentShader(CharSequence string)
     {
         int shader = Contexts.getContexts().createShader(program, GL20.GL_FRAGMENT_SHADER);
         GL20.glShaderSource(shader, string);
         GL20.glCompileShader(shader);
-        return shader;
+        GL20.glAttachShader(program, shader);
     }
 
-    public int createGeometryShader(CharSequence string)
+    public void createGeometryShader(CharSequence string)
     {
         int shader = Contexts.getContexts().createShader(program, GL32.GL_GEOMETRY_SHADER);
         GL20.glShaderSource(shader, string);
         GL20.glCompileShader(shader);
-        return shader;
-    }
-
-    public void addShader(int shader)
-    {
         GL20.glAttachShader(program, shader);
     }
 
@@ -66,33 +61,33 @@ public class Shader
         GL20.glUseProgram(0);
     }
 
-    public int getUniform(String name)
+    public int uniformLocation(String name)
     {
         return GL20.glGetUniformLocation(program, name);
     }
 
-    public void setUniform(int location, int value)
+    public void put(int location, int value)
     {
         GL20.glUniform1i(location, value);
     }
 
-    public void setUniform(int location, float value)
+    public void put(int location, float value)
     {
         GL20.glUniform1f(location, value);
     }
 
-    public void setUniform(int location, boolean value)
+    public void put(int location, boolean value)
     {
         if (value)
         {
-            setUniform(location, 1);
+            put(location, 1);
         } else
         {
-            setUniform(location, 0);
+            put(location, 0);
         }
     }
 
-    public void setUniform(int location, Vector2f value)
+    public void put(int location, Vector2f value)
     {
         if (value != null)
         {
@@ -100,7 +95,7 @@ public class Shader
         }
     }
 
-    public void setUniform(int location, Vector3f value)
+    public void put(int location, Vector3f value)
     {
         if (value != null)
         {
@@ -108,7 +103,7 @@ public class Shader
         }
     }
 
-    public void setUniform(int location, Vector4f value)
+    public void put(int location, Vector4f value)
     {
         if (value != null)
         {
@@ -116,7 +111,7 @@ public class Shader
         }
     }
 
-    public void setUniform(int location, Matrix4f value)
+    public void put(int location, Matrix4f value)
     {
         if (value != null)
         {

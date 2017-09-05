@@ -1,5 +1,7 @@
 package core;
 
+import util.Util;
+
 public class Timer
 {
     private long lastDeltaTime;
@@ -10,16 +12,16 @@ public class Timer
 
     public void start()
     {
-        lastDeltaTime = getTime();
-        lastFrameTime = getTime();
+        lastDeltaTime = Util.getTime();
+        lastFrameTime = Util.getTime();
     }
 
     public void update()
     {
-        long time = getTime();
+        long time = Util.getTime();
         delta = (int) (time - lastDeltaTime);
         lastDeltaTime = time;
-        if (getTime() - lastFrameTime > 1000)
+        if (Util.getTime() - lastFrameTime > 1000)
         {
             fps = frame;
             frame = 0;
@@ -29,18 +31,15 @@ public class Timer
         //System.out.println(fps);
     }
 
-    public int getDelta()
+    public int delta()
     {
         return delta;
     }
 
-    public int getFps()
+    public int fps()
     {
         return fps;
     }
 
-    public static long getTime()
-    {
-        return System.nanoTime() / 1000000;
-    }
+
 }

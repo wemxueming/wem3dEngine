@@ -1,18 +1,59 @@
 package core;
 
-import util.Util;
+import core.control.Control;
+import org.lwjgl.input.Keyboard;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public interface Controller
+public class Controller
 {
-    Map<String, Integer> KEY_MAP = Util.getKeyboardMap();
+    private Map<Integer, Control> controls = new HashMap<Integer, Control>();
+    private Timer timer;
 
-    void control(int delta);
+    public Controller(Timer timer)
+    {
+        this.timer = timer;
+    }
 
-    void nextControl(int delta);
+    public void update()
+    {
+        if (Keyboard.next())
+        {
+            for (Control control : controls.values())
+            {
+                if (control.isActive())
+                {
+                    control.nextControl(timer.delta());
+                }
+            }
+        }
+        for (Control control : controls.values())
+        {
+            if (control.isActive())
+            {
+                control.control(timer.delta());
+            }
+        }
+    }
 
-    boolean isActive();
+    public Map<Integer, Control> getControls()
+    {
+        return controls;
+    }
 
-    void setActive(boolean b);
+    public void setControls(Map<Integer, Control> controls)
+    {
+        this.controls = controls;
+    }
+
+    public Timer getTimer()
+    {
+        return timer;
+    }
+
+    public void setTimer(Timer timer)
+    {
+        this.timer = timer;
+    }
 }

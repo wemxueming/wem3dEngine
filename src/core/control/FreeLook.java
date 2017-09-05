@@ -1,13 +1,12 @@
 package core.control;
 
 import core.Camera;
-import core.Controller;
 import math3d.Vector3f;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import util.MathUtil;
 
-public class FreeLook implements Controller
+public class FreeLook extends AbsControl
 {
     private static final float MOVE_FORMAT = 0.003f;
     private static final float LOOK_FORMAT = 0.004f;
@@ -22,19 +21,19 @@ public class FreeLook implements Controller
     private static boolean RIGHT;
 
     private Camera camera;
-    private boolean active;
-    private float moveSpeed = 2f;
+    private float moveSpeed = 1f;
     private float lookSpeed = 1f;
-    private int keyUp = KEY_MAP.get("w");
-    private int keyDown = KEY_MAP.get("s");
-    private int keyLeft = KEY_MAP.get("a");
-    private int keyRight = KEY_MAP.get("d");
-    private int keyGrab = KEY_MAP.get("esc");
-    private int keySpeedUp = KEY_MAP.get("up");
-    private int keySpeedDown = KEY_MAP.get("down");
+    private int keyUp = KEY.get("w");
+    private int keyDown = KEY.get("s");
+    private int keyLeft = KEY.get("a");
+    private int keyRight = KEY.get("d");
+    private int keyGrab = KEY.get("esc");
+    private int keySpeedUp = KEY.get("up");
+    private int keySpeedDown = KEY.get("down");
 
     public FreeLook(Camera camera)
     {
+        super();
         this.camera = camera;
     }
 
@@ -77,36 +76,24 @@ public class FreeLook implements Controller
         }
     }
 
-    @Override
-    public boolean isActive()
+    public void addKeyUp(String keyName)
     {
-        return active;
+        keyUp = KEY.get(keyName.toLowerCase());
     }
 
-    @Override
-    public void setActive(boolean b)
+    public void addKeyDown(String keyName)
     {
-        active = b;
+        keyDown = KEY.get(keyName.toLowerCase());
     }
 
-    public void setKeyUp(String keyName)
+    public void addKeyLeft(String keyName)
     {
-        keyUp = KEY_MAP.get(keyName.toLowerCase());
+        keyLeft = KEY.get(keyName.toLowerCase());
     }
 
-    public void setKeyDown(String keyName)
+    public void addKeyRight(String keyName)
     {
-        keyDown = KEY_MAP.get(keyName.toLowerCase());
-    }
-
-    public void setKeyLeft(String keyName)
-    {
-        keyLeft = KEY_MAP.get(keyName.toLowerCase());
-    }
-
-    public void setKeyRight(String keyName)
-    {
-        keyRight = KEY_MAP.get(keyName.toLowerCase());
+        keyRight = KEY.get(keyName.toLowerCase());
     }
 
     public float getMoveSpeed()

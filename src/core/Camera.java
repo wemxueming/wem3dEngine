@@ -22,8 +22,6 @@ public class Camera
     private Vector3f position;
     private Vector3f rotate;
 
-    private Buffer cameraBuffer;
-
     public Camera(int width, int height, float fov, float near, float far, Vector3f position, Vector3f rotate)
     {
         this.width = width;
@@ -40,14 +38,7 @@ public class Camera
         this(800, 600, 60f, 0.1f, 1000f, new Vector3f(0, 0, -1), new Vector3f(0, 0, 0));
     }
 
-    public void update()
-    {
-        cameraBuffer.begin();
-        cameraBuffer.setBuffer(0, getCameraBuffer());
-        cameraBuffer.end();
-    }
-
-    public FloatBuffer getCameraBuffer()
+    public FloatBuffer buffer()
     {
         float aspectRatio = (float) width / (float) height;
         float yScale = MathUtil.coTangent(MathUtil.toRadians(fov / 2f));
@@ -69,11 +60,6 @@ public class Camera
 
         BufferUtil.update(CAMERA_BUFFER, PROJECTION_MATRIX, VIEW_MATRIX);
         return CAMERA_BUFFER;
-    }
-
-    public void setCameraBuffer(Buffer cameraBuffer)
-    {
-        this.cameraBuffer = cameraBuffer;
     }
 
     public int getWidth()
