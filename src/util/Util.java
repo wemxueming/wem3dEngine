@@ -62,4 +62,57 @@ public class Util
         map.put(3250f, new Vector3f(1.0f, 0.0014f, 0.000007f));
         return map;
     }
+
+    public static int getMipmapLevel(int width, int height)
+    {
+        if (width >= 4096 || height >= 4096)
+        {
+            return 13;
+        }
+        if ((width < 4096 && width >= 2048) || (height < 4096 && height >= 2048))
+        {
+            return 12;
+        }
+        if ((width < 2048 && width >= 1024) || (height < 2048 && height >= 1024))
+        {
+            return 11;
+        }
+        if ((width < 1024 && width >= 512) || (height < 1024 && height >= 512))
+        {
+            return 10;
+        }
+        if ((width < 512 && width >= 256) || (height < 512 && height >= 256))
+        {
+            return 9;
+        }
+        if ((width < 256 && width >= 128) || (height < 256 && height >= 128))
+        {
+            return 8;
+        }
+        if ((width < 128 && width >= 64) || (height < 128 && height >= 64))
+        {
+            return 7;
+        }
+        if ((width < 64 && width >= 32) || (height < 64 && height >= 32))
+        {
+            return 6;
+        }
+        if ((width < 32 && width >= 16) || (height < 32 && height >= 16))
+        {
+            return 5;
+        }
+        if ((width < 16 && width >= 8) || (height < 16 && height >= 8))
+        {
+            return 4;
+        }
+        if ((width < 8 && width >= 4) || (height < 8 && height >= 4))
+        {
+            return 3;
+        }
+        if ((width < 4 && width >= 2) || (height < 4 && height >= 2))
+        {
+            return 2;
+        }
+        return 1;
+    }
 }

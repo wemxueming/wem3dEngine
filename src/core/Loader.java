@@ -1,19 +1,12 @@
 package core;
 
-import core.gl.Buffer;
-import core.gl.Shader;
 import math3d.Vector2f;
 import math3d.Vector3f;
-
 import math3d.Vertex;
 import util.BufferUtil;
 import util.FileUtil;
 import util.Util;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +16,8 @@ public class Loader
 {
     private static int PLAN_ID = -1;
     private Scene scene;
+
+    private Map<String, Texture> textureMap = new HashMap<String, Texture>();
 
     public Loader(Scene scene)
     {
@@ -43,7 +38,13 @@ public class Loader
                     1,2,3
             };
             List<Integer> indices = Util.asList(arrays);
-            Mod mod = new Mod(new Mesh[]{new Mesh(indices.size())});
+            Mod mod = new Mod
+            (
+                new Mesh[]
+                {
+                    new Mesh(indices.size(), getDefaultMaterial())
+                }
+            );
             Model model = new Model(BufferUtil.createF(vertexs), BufferUtil.createI(indices), mod);
             scene.add(model);
             PLAN_ID = model.id();
@@ -53,5 +54,24 @@ public class Loader
         {
             return scene.getModelMap().get(PLAN_ID);
         }
+    }
+
+    public Texture loadTexture(String src)
+    {
+        if (textureMap.get(src) == null)
+        {
+            Texture t = new Texture(FileUtil.readImage(src));
+            textureMap.put(src, t);
+            return t;
+        }
+        else
+        {
+            return textureMap.get(src);
+        }
+    }
+
+    public Material getDefaultMaterial()
+    {
+        return new Material(new Vector3f(1,0,0), 0.5f,0.5f,1);
     }
 }

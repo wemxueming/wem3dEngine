@@ -1,9 +1,8 @@
 package util;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
 public class FileUtil
 {
@@ -28,5 +27,21 @@ public class FileUtil
             e.printStackTrace();
         }
         return stringBuilder;
+    }
+
+    public static BufferedImage readImage(String src)
+    {
+        BufferedImage image = null;
+        try
+        {
+            image = ImageIO.read(new FileInputStream(src));
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return image;
     }
 }

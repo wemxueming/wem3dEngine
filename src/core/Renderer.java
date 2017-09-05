@@ -20,6 +20,14 @@ public class Renderer
     private Buffer cameraBuffer;
     private Buffer transformBuffer;
     private Buffer lightsBuffer;
+    private Buffer materialBuffer;
+
+    private int albedoMapLocation;
+    private int metallicMapLocation;
+    private int roughnessMapLocation;
+    private int aoMapLocation;
+    private int normalMapLocation;
+    private int heightMapLocation;
 
     public Renderer(Scene scene)
     {
@@ -32,6 +40,18 @@ public class Renderer
         cameraBuffer = new Buffer(64 * 2, 0);
         transformBuffer = new Buffer(64, 1);
         lightsBuffer = new Buffer(16 + 64 * 10, 2);
+        materialBuffer = new Buffer(60, 3);
+        init();
+    }
+
+    public void init()
+    {
+        albedoMapLocation = modelShader.uniformLocation("albedoMap");
+        metallicMapLocation = modelShader.uniformLocation("metallicMap");
+        roughnessMapLocation = modelShader.uniformLocation("roughnessMap");
+        aoMapLocation = modelShader.uniformLocation("aoMap");
+        normalMapLocation = modelShader.uniformLocation("normalMap");
+        heightMapLocation = modelShader.uniformLocation("heightMap");
     }
 
     public void update()
@@ -78,7 +98,33 @@ public class Renderer
                     Mesh[] meshes = mod.getMeshes();
                     for (Mesh mesh : meshes)
                     {
+                        Material material = mesh.getMaterial();
+                        Texture albedoMap = material.getAlbedoMap();
+                        Texture metallicMap = material.getMetallicMap();
+                        Texture roughnessMap = material.getRoughnessMap();
+                        Texture aoMap = material.getAoMap();
+                        Texture normalMap = material.getNormalMap();
+                        Texture heightMap = material.getHeightMap();
+
+                        materialBuffer.begin();
+                        materialBuffer.put(0, material.buffer());
+                        materialBuffer.end();
+
+                        enable(albedoMap, 0, modelShader, albedoMapLocation);
+                        enable(metallicMap, 1, modelShader, metallicMapLocation);
+                        enable(roughnessMap, 2, modelShader, roughnessMapLocation);
+                        enable(aoMap, 3, modelShader, aoMapLocation);
+                        enable(normalMap, 4, modelShader, normalMapLocation);
+                        enable(heightMap, 5, modelShader, heightMapLocation);
+
                         vertexArray.drawTriangle(mesh.getCount());
+
+                        disable(albedoMap);
+                        disable(metallicMap);
+                        disable(roughnessMap);
+                        disable(aoMap);
+                        disable(normalMap);
+                        disable(heightMap);
                     }
                 }
             }
@@ -88,8 +134,24 @@ public class Renderer
         modelShader.end();
     }
 
+    public void enable(Texture t, int location, Shader shader, int uniformLocation)
+    {
+        if (t != null)
+        {
+            t.begin(location);
+        }
+        shader.put(uniformLocation, location);
+    }
 
-    protected CharSequence loadShaderSource(String src)
+    public void disable(Texture t)
+    {
+        if (t != null)
+        {
+            t.end();
+        }
+    }
+
+    public CharSequence loadShaderSource(String src)
     {
         BufferedReader reader = null;
         String line;
